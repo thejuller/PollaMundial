@@ -1,9 +1,11 @@
 'use server';
 
-import { prisma } from '@/lib/prisma';
+import { PrismaClient } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { normalizeEmail, capitalizeName } from '@/lib/normalize';
+
+const prisma = new PrismaClient();
 
 export async function loginUser(formData: FormData) {
     const rawEmail = formData.get('email') as string;
