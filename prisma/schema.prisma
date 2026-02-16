@@ -1,0 +1,73 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+model User {
+  id          String       @id @default(uuid())
+  email       String       @unique
+  name        String?
+  role        String       @default("USER") // USER, ADMIN
+  points      Int          @default(0)
+  predictions Prediction[]
+  createdAt   DateTime     @default(now())
+}
+
+model Match {
+  id          String       @id @default(uuid())
+  homeTeam    String
+  awayTeam    String
+  homeScore   Int?
+  awayScore   Int?
+  date        DateTime
+  status      String       @default("SCHEDULED") // SCHEDULED, LIVE, FINISHED
+  predictions Prediction[]
+}
+
+model Prediction {
+  id        String   @id @default(uuid())
+  userId    String
+  matchId   String
+  homeScore Int
+  awayScore Int
+  points    Int?     // Calculated after match finishes
+  
+  user      User     @relation(fields: [userId], references: [id])
+  match     Match    @relation(fields: [matchId], references: [id])
+
+  @@unique([userId, matchId])
+}
+
+model BracketPrediction {
+  id            String   @id @default(uuid())
+  userId        String
+  stage         String   // ROUND_OF_16, QUARTER_FINALS, SEMI_FINALS, FINAL
+  position      Int      // 1-8 for R16, 1-4 for QF, 1-2 for SF, 1 for Final
+  homeTeamId    Int?     // Football-data.org team ID
+  awayTeamId    Int?     // Football-data.org team ID
+  homeTeamName  String?  // Cached team name
+  awayTeamName  String?  // Cached team name
+  homeScore     Int?
+  awayScore     Int?
+  actualMatchId Int?     // Match ID when it becomes known
+  points        Int?     // Calculated after match finishes
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([userId, stage, position])
+}
+
+model ScoringRule {
+  id          String   @id // e.g., "EXACT_SCORE", "ROUND_OF_16"
+  description String
+  points      Int
+  category    String   // GROUP, BRACKET
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

@@ -1,0 +1,61 @@
+# Dependencias (en cualquier nivel)
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+.nyc_output/
+
+# Next.js
+.next/
+out/
+build/
+
+# Vercel
+.vercel/
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Archivos de entorno local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Mantener solo los de ejemplo
+!*.example
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Editor de código
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+.idea/
+*.swp
+*.swo
+
+# Archivos del sistema operativo (Windows/Mac)
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+.Spotlight-V100
+.Trashes
+
+# Archivos específicos del proyecto que no deben subirse
+Polla.rar
+password
+admin
