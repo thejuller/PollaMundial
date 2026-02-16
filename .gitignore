@@ -58,4 +58,4 @@ ehthumbs.db
 # Archivos específicos del proyecto que no deben subirse
 Polla.rar
 password
-admin
+/admin
